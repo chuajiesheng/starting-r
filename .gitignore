@@ -9,3 +9,6 @@
 *.html
 *.md
 *.png
+
+# Data files
+data/
