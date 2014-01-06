@@ -1,0 +1,63 @@
+# Summarizing Data
+
+```{r download}
+fileUrl <- "http://earthquake.usgs.gov/earthquakes/catalogs/eqs7day-M1.txt"
+download.file(fileUrl, destfile="./data/earthquakeData.csv" ,method="curl")
+dateDownloaded <- date()
+dateDownloaded
+```
+
+## Reading data
+
+```{r read}
+eData <- read.csv("./data/earthquakeData.csv")
+head(eData)
+```
+
+## Overview
+
+```{r overview}
+dim(eData) # rows x cols
+names(eData) # name of cols
+nrow(eData) # number of rows
+quantile(eData$Lat, na.rm=TRUE)
+summary(eData)
+class(eData)
+sapply(eData[1,], class) # class by columns
+unique(eData$Src)
+length(unique(eData$Src))
+table(eData$Src)
+table(eData$Src, eData$Version)
+eData$Lat[1:10]
+eData$Lat[1:10] > 40 # logical application
+any(eData$Lat[1:10] > 40)
+all(eData$Lat[1:10] > 40)
+eData[eData$Lat > 0 & eData$Lon > 0, c("Lat", "Lon")] # subset with and operator
+eData[eData$Lat > 0 | eData$Lon > 0, c("Lat", "Lon")] # subset with or operator
+is.na(eData$Lat[1:10])
+sum(is.na(eData$Lat[1:10]))
+table(is.na(eData$Lat[1:10]))
+colSums(eData[,5:6], na.rm=TRUE)
+colMeans(eData[,5:6], na.rm=TRUE)
+rowMeans(eData[,5:6], na.rm=TRUE)
+```
+
+## Another data set
+
+```{r another}
+fileUrl1 <- "https://dl.dropbox.com/u/7710864/data/reviews-apr29.csv"
+fileUrl2 <- "https://dl.dropbox.com/u/7710864/data/solutions-apr29.csv"
+download.file(fileUrl1, destfile="./data/reviews.csv", method="curl")
+download.file(fileUrl2, destfile="./data/solutions.csv", method="curl")
+reviews <- read.csv("./data/reviews.csv")
+solutions <- read.csv("./data/solutions.csv")
+head(reviews, 2)
+head(solutions, 2)
+```
+
+## Issues
+
+```{r issues}
+table(c(0,1,2,3,NA,3,3,2,2,3))
+table(c(0,1,2,3,NA,3,3,2,2,3), useNA="ifany")
+```
