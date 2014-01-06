@@ -1,0 +1,28 @@
+# Getting Data
+
+```{r source}
+cameraCsvUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?accessType=DOWNLOAD"
+cameraJsonUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.json?accessType=DOWNLOAD"
+```
+
+```{r download}
+download.file(cameraCsvUrl, destfile="./data/cameras.csv", method="curl")
+list.files("./data")
+dateDownload <- date()
+dateDownload
+```
+
+```{r read}
+cameraData <- read.table("./data/cameras.csv", sep=",", header=TRUE)
+head(cameraData)
+```
+
+```{r alt read}
+cameraData <- read.csv("./data/cameras.csv")
+head(cameraData)
+```
+
+```{r choose}
+loc <- file.choose()
+cat(loc)
+```
