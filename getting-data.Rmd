@@ -5,6 +5,8 @@ cameraCsvUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.csv?acc
 cameraJsonUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.json?accessType=DOWNLOAD"
 ```
 
+## Downloading data
+
 ```{r download}
 download.file(cameraCsvUrl, destfile="./data/cameras.csv", method="curl")
 list.files("./data")
@@ -12,17 +14,113 @@ dateDownload <- date()
 dateDownload
 ```
 
+## Reading data
+
 ```{r read}
 cameraData <- read.table("./data/cameras.csv", sep=",", header=TRUE)
 head(cameraData)
 ```
+
+## Reading as CSV
 
 ```{r alt read}
 cameraData <- read.csv("./data/cameras.csv")
 head(cameraData)
 ```
 
+## Choosing files
+
 ```{r choose}
 loc <- file.choose()
 cat(loc)
 ```
+
+## Reading file
+
+```{r file}
+con <- file("./data/cameras.csv", "r")
+cameraData <- read.csv(con)
+close(con) # is important to close the file
+head(cameraData)
+```
+
+## Reading from the web
+
+```{r web}
+con <- url("http://simplystatistics.org" ,"r")
+simplyStats <- readLines(con)
+close(con)
+head(simplyStats)
+```
+
+## Reading JSON files
+
+```{r json}
+library(RJSONIO)
+fileUrl <- "https://data.baltimorecity.gov/api/views/dz54-2aru/rows.json?accessType=DOWNLOAD"
+download.file(fileUrl, destfile = "./data/cameras.json", method="curl")
+con = file("./data/cameras.json")
+jsonCamera = fromJSON(con)
+close(con)
+head(jsonCamera)
+
+head(jsonCamera)$meta
+head(jsonCamera)$meta$view
+head(jsonCamera)$meta$view$id
+head(jsonCamera)$meta$view$name
+head(jsonCamera)$meta$view$attribution
+head(jsonCamera)$meta$view$attributionLink
+```
+
+## Writing data
+
+```{r writing}
+cameraData <- read.csv("./data/cameras.csv")
+tmpData <- cameraData[, -1] # removing the first column
+write.table(tmpData, file="./data/camerasModified.csv", sep=",")
+cameraData2 <- read.csv("./data/camerasModified.csv")
+head(cameraData2)
+```
+
+## Saving objects
+
+```{r saving}
+save(tmpData, cameraData, file="./data/cameras.rda")
+list.files("./data")
+```
+
+## Removing everthing from workspace
+
+```{r clear}
+rm(list=ls())
+ls()
+load("./data/cameras.rda")
+ls()
+```
+
+## Paste
+
+```{r paste}
+for (i in 1:5) {
+  fileName = paste0("./data", i, ".csv")
+  print(fileName)
+}
+```
+
+## Reading webpages
+
+```{r webpage}
+library(XML)
+con = url("http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en")
+htmlCode = readLines(con)
+close(con)
+head(htmlCode)
+```
+
+## Parsing HTML tree
+
+```{r parsing}
+html3 <- htmlTreeParse("http://scholar.google.com/citations?user=HI-I6C0AAAAJ&hl=en")
+head(html3)
+```
+
