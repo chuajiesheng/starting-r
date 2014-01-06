@@ -1,5 +1,11 @@
 # History files
 .Rhistory
+.Rapp.history
 
 # Example code in package build process
 *-Ex.R
+
+# R markdown intermediate files
+*.html
+*.md
+*.png
