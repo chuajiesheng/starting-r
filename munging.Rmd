@@ -1,0 +1,100 @@
+# Data Munging
+
+```{r character}
+cameraData <- read.csv("./data/cameras.csv")
+names(cameraData)
+tolower(names(cameraData))
+splitNames = strsplit(names(cameraData), "\\.")
+splitNames
+firstElement <- function(x){x[1]}
+splitNames <- sapply(splitNames, firstElement)
+splitNames <- sapply(splitNames, tolower)
+splitNames
+```
+
+## Peer review data
+
+```{r peer-review}
+fileUrl1 <- "./data/reviews-apr29.csv"
+fileUrl2 <- "./data/solutions-apr29.csv"
+reviews <- read.csv(fileUrl1)
+solutions <- read.csv(fileUrl2)
+head(reviews, 2)
+```
+
+## Fixing character vectors
+
+```{r sub}
+names(reviews)
+sub("_", "", names(reviews),)
+testName <- "this_is_a_test"
+sub("_", "", testName)
+gsub("_", "", testName)
+```
+
+## Quantitative variables
+
+```{r ranges}
+reviews$time_left[1:10]
+timeRanges <- cut(reviews$time_left, seq(0, 3600, by=600))
+timeRanges[1:10]
+class(timeRanges)
+table(timeRanges, useNA="ifany")
+library(Hmisc)
+timeRanges <- cut2(reviews$time_left, g=6)
+table(timeRanges, useNA="ifany")
+reviews$timeRanges <- timeRanges
+head(reviews, 2)
+```
+
+## Merging data
+
+```{r merging}
+names(reviews)
+names(solutions)
+mergedData <- merge(reviews, solutions, all=TRUE)
+head(mergedData)
+mergedData2 <- merge(reviews, solutions, by.x="solution_id", by.y="id", all=TRUE)
+head(mergedData2[,1:6], 3)
+reviews[1,1:6]
+```
+
+## Sorting values
+
+```{r sort}
+mergedData2$reviewer_id[1:10]
+sort(mergedData2$reviewer_id)[1:10]
+```
+
+## Ordering values
+
+The order function return the index of the values instead of ordered list
+
+```{r order}
+mergedData2$reviwer_id[1:10]
+order(mergedData2$reviewer_id)[1:10]
+mergedData2$reviewer_id[order(mergedData2$reviewer_id)]
+```
+
+## Reordering a data frame
+
+```{r reorder}
+head(mergedData2[,1:6], 3)
+sortedData <- mergedData2[order(mergedData2$reviewer_id),] # reordering by one variable
+head(sortedData[,1:6],3)
+sortedData <- mergedData2[order(mergedData2$reviewer_id,mergedData2$id),] # reordering by two variable
+head(sortedData[,1:6],3)
+```
+
+## Reshaping data
+
+```{r reshape}
+misShaped <- as.data.frame(matrix(c(NA,5,1,4,2,3), byrow=TRUE, nrow=3))
+misShaped
+names(misShaped) <- c("treatmentA","treatmentB")
+misShaped
+misShaped$people <- c("John", "Jane", "Mary")
+misShaped
+library(reshape2)
+melt(misShaped, id.vars="people", variable.name="treatment", value.name="value")
+```
