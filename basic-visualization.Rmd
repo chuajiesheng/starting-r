@@ -1,0 +1,20 @@
+Create Multiplex Visualization
+========================================================
+[Source](http://www.stanford.edu/~messing/CreateBasicNetVis.html)
+
+```{r}
+library(igraph)
+fradj = read.delim("http://stanford.edu/~messing/Krack-High-Tec-ADVICE.tab", header = TRUE, row.names = 1)
+fradj <- data.matrix(fradj)
+colnames(fradj) = 1:21
+
+frnet = graph.adjacency(fradj)
+
+frnet
+plot.igraph(frnet)
+plot.igraph(frnet, layout=layout.fruchterman.reingold)
+
+V(frnet)$name
+V(frnet)$label = letters[as.numeric(V(frnet)$name)]
+plot.igraph(frnet, layout=layout.fruchterman.reingold)
+```

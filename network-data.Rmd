@@ -1,0 +1,9 @@
+SNA with R: Loading your network data
+========================================================
+
+```{r}
+library("network")
+n <- network(matrix(scan(file="./data/cdr.1e5x1e0.csv", what=integer(0), skip=1, sep=','), ncol=4, byrow=TRUE), matrix.type="edgelist", directed=TRUE, multiple=TRUE)
+proc.time()
+save(n, file="n.RData", ascii=FALSE, compress=FALSE)
+```

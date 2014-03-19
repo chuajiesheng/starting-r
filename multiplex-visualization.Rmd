@@ -1,0 +1,29 @@
+Create Multiplex Visualization 
+========================================================
+[Source](http://www.stanford.edu/~messing/MultiplexVis.html)
+
+```{r}
+library(igraph)
+advadj = read.delim("http://stanford.edu/~messing/Krack-High-Tec-ADVICE.tab", row.names = 1)
+advadj <- data.matrix(advadj)
+colnames(advadj) = 1:21
+
+rptadj = read.delim("http://stanford.edu/~messing/Krack-High-Tec-REPORTS_TO.tab", row.names = 1)
+colnames(rptadj) = 1:21
+rptadj <- data.matrix(rptadj)
+
+advnet = graph.adjacency(advadj)
+rptnet = graph.adjacency(rptadj)
+length(E(advnet))
+length(E(rptnet))
+la = layout.fruchterman.reingold( advnet )  
+plot.igraph( advnet, layout = la )
+E(advnet)$weight <- count.multiple(advnet)
+advnet <- simplify(advnet)
+la = layout.fruchterman.reingold( advnet, weights = E( advnet )$weight )   
+plot.igraph( advnet, layout = la )
+```
+
+```{r}
+tkplot(frnet, layout=layout.fruchterman.reingold)
+```
